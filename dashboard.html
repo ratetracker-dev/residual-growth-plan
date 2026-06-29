@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analytics | Rate Tracker Growth Plans</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="brand.css">
+<style>
+.appbar{background:var(--rt-ink);color:#fff;padding:var(--space-4) 0;position:sticky;top:0;z-index:50}
+.appbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);max-width:1180px}
+.appbar .logo img{height:38px;padding:5px 10px;border-radius:10px}
+.appbar .brandtxt{font-family:'Poppins';font-weight:700;font-size:1rem;color:#fff}
+.appbar .right{display:flex;align-items:center;gap:var(--space-3)}
+.linkbtn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:.82rem;font-weight:600;padding:.45rem .9rem;border-radius:999px;cursor:pointer;text-decoration:none;font-family:'Poppins',sans-serif;white-space:nowrap}
+.linkbtn:hover{background:rgba(69,183,46,.22);border-color:var(--rt-green)}
+@media(max-width:640px){
+  .appbar .wrap{flex-direction:column;align-items:flex-start;gap:var(--space-3)}
+  .appbar .brandtxt{font-size:.92rem}
+  .appbar .right{flex-wrap:wrap;gap:.5rem}
+  .linkbtn{font-size:.78rem;padding:.4rem .75rem}
+  .dashhead h1{font-size:1.5rem}
+  .dashwrap{padding:var(--space-6) var(--space-4) var(--space-12)}
+  /* Cap the share-link cell so a long URL truncates instead of bleeding into other columns */
+  table.tbl td:nth-child(2) .refcode{max-width:150px}
+}
+
+.dashwrap{max-width:1180px;margin:0 auto;padding:var(--space-10) var(--space-5) var(--space-16)}
+.dashhead{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--space-4);margin-bottom:var(--space-6);flex-wrap:wrap}
+.dashhead h1{font-size:1.9rem;font-weight:800;margin-bottom:.3rem}
+.dashhead .sub{color:var(--text-muted)}
+.updated{font-size:.78rem;color:var(--text-muted);margin-top:.35rem}
+
+/* demo toggle */
+.demobar{display:flex;align-items:center;gap:.7rem;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:.5rem .9rem;box-shadow:var(--shadow)}
+.demobar .lbl{font-size:.82rem;font-weight:600;color:var(--text)}
+.switch{position:relative;display:inline-block;width:44px;height:24px}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;inset:0;background:var(--border);border-radius:999px;cursor:pointer;transition:.18s}
+.slider:before{content:"";position:absolute;height:18px;width:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.18s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.switch input:checked + .slider{background:var(--rt-green)}
+.switch input:checked + .slider:before{transform:translateX(20px)}
+.demoflag{display:none;align-items:center;gap:.5rem;background:#fff7e6;border:1px solid #f0d18a;color:#7a5b13;border-radius:10px;padding:.6rem .9rem;font-size:.85rem;font-weight:600;margin-bottom:var(--space-6)}
+[data-demo="on"] .demoflag{display:flex}
+
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-4);margin-bottom:var(--space-6)}
+@media(max-width:860px){.stat-row{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:var(--space-5);box-shadow:var(--shadow);display:flex;flex-direction:column}
+.stat .n{font-family:'Poppins';font-weight:800;font-size:2rem;color:var(--rt-green-deep);line-height:1}
+.stat .l{font-size:.78rem;color:var(--text-muted);margin-top:.45rem}
+.stat .d{font-size:.74rem;font-weight:600;margin-top:.35rem}
+.stat .d.up{color:var(--rt-green-deep)}
+.stat .d.flat{color:var(--text-muted)}
+
+.grid2{display:grid;grid-template-columns:1.5fr 1fr;gap:var(--space-5);margin-bottom:var(--space-6)}
+.grid2>*{min-width:0}
+@media(max-width:900px){.grid2{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:var(--space-6);min-width:0;overflow:hidden}
+.panel h2{font-size:1.05rem;font-weight:700;margin-bottom:.25rem}
+.panel .psub{font-size:.82rem;color:var(--text-muted);margin-bottom:var(--space-5)}
+.chartbox{position:relative;height:260px}
+.chartbox.sm{height:230px}
+
+/* funnel */
+.funnel{display:flex;flex-direction:column;gap:var(--space-4)}
+.fstep .meta{font-size:.84rem;margin-bottom:.3rem}
+.fstep .meta b{font-weight:700;color:var(--text)}
+.fstep .meta span{color:var(--text-muted);font-size:.78rem;margin-left:.5rem}
+.fstep .track{width:100%}
+.fstep .bar{height:38px;border-radius:10px;background:var(--rt-green);display:flex;align-items:center;padding:0 .9rem;color:#06250a;font-weight:700;font-family:'Poppins';font-size:.95rem;min-width:40px;transition:width .5s ease}
+.fstep:nth-child(2) .bar{background:#5cc247}
+.fstep:nth-child(3) .bar{background:#7ace66}
+.fstep:nth-child(4) .bar{background:var(--rt-green-deep);color:#fff}
+
+.tblwrap{width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.tbl{width:100%;border-collapse:collapse;font-size:.9rem;min-width:380px}
+table.tbl td b{white-space:nowrap}
+table.tbl th{text-align:left;font-family:'Poppins';font-weight:600;font-size:.78rem;color:var(--text-muted);padding:.55rem .6rem;border-bottom:1px solid var(--border)}
+table.tbl td{padding:.6rem .6rem;border-bottom:1px solid var(--border)}
+table.tbl tr:last-child td{border-bottom:none}
+.refcode{font-family:ui-monospace,Menlo,monospace;font-size:.8rem;background:var(--surface-2);padding:.15rem .45rem;border-radius:6px;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom}
+.pill{display:inline-block;font-size:.72rem;font-weight:700;padding:.2rem .6rem;border-radius:999px}
+.pill.signed{background:#e7f6ea;color:#1f8f12}
+.pill.gen{background:var(--surface-2);color:var(--text-muted)}
+.empty{padding:var(--space-8);text-align:center;color:var(--text-muted);font-size:.92rem}
+
+.center-screen{min-height:100vh;display:grid;place-items:center;padding:var(--space-6);text-align:center}
+.spinner{width:34px;height:34px;border:3px solid var(--border);border-top-color:var(--rt-green);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto var(--space-4)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hidden{display:none!important}
+.ga-pending{font-family:'Poppins';font-weight:600;font-size:.92rem;color:var(--text-muted)}
+.tierbar{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-top:var(--space-4);justify-content:center}
+.tierchip{background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:.45rem .9rem;font-size:.82rem;font-weight:600;display:flex;align-items:center;gap:.5rem}
+.tierchip .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.tierchip b{font-family:'Poppins';color:var(--rt-green-deep)}
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div id="loadingScreen" class="center-screen">
+  <div><div class="spinner"></div><p style="color:var(--text-muted)">Loading your dashboard...</p></div>
+</div>
+
+<!-- Denied -->
+<div id="denied" class="center-screen hidden">
+  <div>
+    <h1 style="font-size:1.4rem;margin-bottom:.5rem">Admins only</h1>
+    <p style="color:var(--text-muted);margin-bottom:var(--space-5)">This dashboard is restricted to Rate Tracker admins.</p>
+    <a class="btn" href="index.html">Back to the plan builder</a>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<div id="dashRoot" class="hidden">
+  <div class="appbar">
+    <div class="wrap">
+      <div class="logo" style="display:flex;align-items:center;gap:.7rem">
+        <span class="brandtxt">Rate Tracker &middot; Growth Analytics</span>
+      </div>
+      <div class="right">
+        <a class="linkbtn" href="admin.html">Partner table</a>
+        <a class="linkbtn" href="index.html">View the tool</a>
+        <button class="linkbtn" id="signout">Sign out</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashwrap">
+    <div class="dashhead">
+      <div>
+        <h1>Growth Plan Analytics</h1>
+        <div class="sub">How residualgrowthplan.com is performing as a recruiting channel.</div>
+        <div class="updated" id="updated"></div>
+      </div>
+      <div class="demobar">
+        <span class="lbl">Demo data</span>
+        <label class="switch"><input type="checkbox" id="demoToggle"><span class="slider"></span></label>
+      </div>
+    </div>
+
+    <div class="demoflag">Demo mode is on. These numbers are illustrative sample data, not live results.</div>
+
+    <!-- KPIs -->
+    <div class="stat-row" id="stats"></div>
+
+    <!-- Charts row -->
+    <div class="grid2">
+      <div class="panel">
+        <h2>Plans generated over time</h2>
+        <div class="psub">New personalized plans built, by week.</div>
+        <div class="chartbox"><canvas id="plansChart"></canvas></div>
+      </div>
+      <div class="panel">
+        <h2>The referral funnel</h2>
+        <div class="psub">From a shared link to a signed partner.</div>
+        <div class="funnel" id="funnel"></div>
+      </div>
+    </div>
+
+    <!-- Second row -->
+    <div class="grid2">
+      <div class="panel">
+        <h2>Top sharers</h2>
+        <div class="psub">Who is bringing the most people in.</div>
+        <div id="sharersArea"></div>
+      </div>
+      <div class="panel">
+        <h2>Tier mix</h2>
+        <div class="psub">The ambition level of the plans being built.</div>
+        <div class="chartbox sm"><canvas id="tierChart"></canvas></div>
+        <div class="tierbar" id="tierbar"></div>
+      </div>
+    </div>
+
+    <!-- Referral links & performance -->
+    <div class="panel" style="margin-bottom:var(--space-6)">
+      <h2>Referral links &amp; performance</h2>
+      <div class="psub">Every finished plan mints a unique link. Here is how each one is performing.</div>
+      <div id="refLinksArea"></div>
+    </div>
+
+    <!-- Site traffic (GA4) -->
+    <div class="panel" style="margin-bottom:var(--space-6)">
+      <h2>Site traffic <span style="font-size:.72rem;font-weight:600;color:var(--text-muted);background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:.15rem .6rem;margin-left:.4rem">Google Analytics</span></h2>
+      <div class="psub">Key engagement events on residualgrowthplan.com. Open GA4 for the full, real-time picture.</div>
+      <div class="stat-row" id="gaStats" style="margin-bottom:var(--space-5)"></div>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+        <a class="btn" id="gaRealtime" target="_blank" rel="noopener">Open GA4 realtime</a>
+        <a class="btn btn-ghost" id="gaEvents" target="_blank" rel="noopener">Open events report</a>
+      </div>
+      <div class="updated" style="margin-top:var(--space-4)">GA4 numbers shown here are illustrative until the live connection is wired. Live counts are always available in GA4 via the buttons above.</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script src="referral.js"></script>
+<script src="dashboard.js"></script>
+</body>
+</html>
