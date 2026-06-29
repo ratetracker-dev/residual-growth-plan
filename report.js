@@ -67,7 +67,11 @@ window.RTReport = (function () {
             <a class="refer-btn" id="refLi" href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(refLink)}" target="_blank" rel="noopener">LinkedIn</a>
             <a class="refer-btn" id="refFb" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(refLink)}" target="_blank" rel="noopener">Facebook</a>
           </div>
-          <a class="btn refer-learn" href="https://growmyresidual.com" target="_blank" rel="noopener">Become a partner to learn more</a>
+          <div class="refer-learn-row">
+            <a class="btn refer-learn" href="https://growmyresidual.com/#cta" target="_blank" rel="noopener">Become a partner and apply now</a>
+            <a class="btn refer-cal" href="https://meetings.hubspot.com/brendan236?uuid=af2f3c65-0f26-426e-8b24-11496093c9ef" target="_blank" rel="noopener">Book a conversation</a>
+          </div>
+          <p class="refer-learn-note">The apply button takes you straight to the form, no need to read the whole page. Fill it out and we will reach out, or grab a time that works best for you on the calendar.</p>
         </section>` : '';
 
     root.innerHTML = `
@@ -319,6 +323,10 @@ window.RTReport = (function () {
       root.querySelectorAll('.refer-btn').forEach(b => b.addEventListener('click', ()=>{
         if(window.RTA) RTA.track('referral_share_clicked', { channel: b.id.replace('ref','').toLowerCase(), ref: (opts.refCode||'') });
       }));
+      const learnBtn = root.querySelector('.refer-learn');
+      if(learnBtn) learnBtn.addEventListener('click', ()=>{ if(window.RTA) RTA.track('referral_apply_click', { ref: (opts.refCode||'') }); });
+      const calBtn = root.querySelector('.refer-cal');
+      if(calBtn) calBtn.addEventListener('click', ()=>{ if(window.RTA) RTA.track('referral_calendar_click', { ref: (opts.refCode||'') }); });
     })();
   }
 
