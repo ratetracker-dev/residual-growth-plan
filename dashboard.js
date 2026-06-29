@@ -49,19 +49,38 @@
     + `</a>`
   ).join('');
 
-  // ---- Auth gate (identical to admin) ----
-  const user = await RTAuth.getUser();
+  // ---- Auth gate (identical to admin, but never allowed to hang) ----
+  // A stale/expired session can make getSession or an authenticated RPC stall,
+  // leaving the spinner forever. Race every auth step against a timeout so we
+  // always resolve: on timeout we send the user back to sign in fresh.
+  const withTimeout = (p, ms) => Promise.race([
+    Promise.resolve(p),
+    new Promise((_, rej) => setTimeout(() => rej(new Error('auth-timeout')), ms))
+  ]);
+
+  let user, admin;
+  try {
+    user = await withTimeout(RTAuth.getUser(), 8000);
+  } catch (e) { window.location.replace('index.html'); return; }
   if (!user) { window.location.replace('index.html'); return; }
-  const admin = await RTAuth.isAdmin();
+
+  try {
+    admin = await withTimeout(RTAuth.isAdmin(), 8000);
+  } catch (e) { window.location.replace('index.html'); return; }
   if (!admin) { loading.classList.add('hidden'); denied.classList.remove('hidden'); return; }
 
   document.getElementById('signout').addEventListener('click', () => RTAuth.signOut().then(() => window.location.replace('index.html')));
 
-  // ---- Load live data ----
-  const [{ data: plansData }, { data: refsData }] = await Promise.all([
-    sb.from('gp_plans').select('*').order('created_at', { ascending: false }),
-    sb.from('gp_referrals').select('*').order('created_at', { ascending: false })
-  ]);
+  // ---- Load live data (also guarded so a stalled query can't trap the spinner) ----
+  let plansData = [], refsData = [];
+  try {
+    const res = await withTimeout(Promise.all([
+      sb.from('gp_plans').select('*').order('created_at', { ascending: false }),
+      sb.from('gp_referrals').select('*').order('created_at', { ascending: false })
+    ]), 12000);
+    plansData = res[0] && res[0].data || [];
+    refsData = res[1] && res[1].data || [];
+  } catch (e) { /* fall through with empty data so the dashboard still renders */ }
   const livePlans = plansData || [];
   const liveRefs = refsData || [];
 
