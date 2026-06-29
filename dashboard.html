@@ -90,7 +90,16 @@ table.tbl tr:last-child td{border-bottom:none}
 .spinner{width:34px;height:34px;border:3px solid var(--border);border-top-color:var(--rt-green);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto var(--space-4)}
 @keyframes spin{to{transform:rotate(360deg)}}
 .hidden{display:none!important}
-.ga-pending{font-family:'Poppins';font-weight:600;font-size:.92rem;color:var(--text-muted)}
+.ga-links{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-4);margin-top:var(--space-5)}
+@media(max-width:640px){.ga-links{grid-template-columns:1fr}}
+.ga-card{display:flex;align-items:center;gap:var(--space-4);padding:var(--space-4) var(--space-5);background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);text-decoration:none;color:var(--text);transition:border-color .15s ease,transform .15s ease,box-shadow .15s ease;min-width:0}
+.ga-card:hover{border-color:var(--rt-green);transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.06)}
+.ga-card .ico{flex:0 0 auto;width:38px;height:38px;border-radius:10px;background:var(--rt-green);display:flex;align-items:center;justify-content:center;color:#fff}
+.ga-card .ico svg{width:20px;height:20px}
+.ga-card .txt{min-width:0}
+.ga-card .ttl{font-family:'Poppins';font-weight:600;font-size:.95rem;color:var(--rt-green-deep);display:flex;align-items:center;gap:.35rem}
+.ga-card .ttl .arr{color:var(--text-muted);font-weight:400}
+.ga-card .dsc{font-size:.82rem;color:var(--text-muted);margin-top:.1rem;line-height:1.35}
 .tierbar{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-top:var(--space-4);justify-content:center}
 .tierchip{background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:.45rem .9rem;font-size:.82rem;font-weight:600;display:flex;align-items:center;gap:.5rem}
 .tierchip .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
@@ -182,16 +191,12 @@ table.tbl tr:last-child td{border-bottom:none}
       <div id="refLinksArea"></div>
     </div>
 
-    <!-- Site traffic (GA4) -->
+    <!-- Site traffic (GA4 launchpad) -->
     <div class="panel" style="margin-bottom:var(--space-6)">
       <h2>Site traffic <span style="font-size:.72rem;font-weight:600;color:var(--text-muted);background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:.15rem .6rem;margin-left:.4rem">Google Analytics</span></h2>
-      <div class="psub">Key engagement events on residualgrowthplan.com. Open GA4 for the full, real-time picture.</div>
-      <div class="stat-row" id="gaStats" style="margin-bottom:var(--space-5)"></div>
-      <div style="display:flex;gap:.6rem;flex-wrap:wrap">
-        <a class="btn" id="gaRealtime" target="_blank" rel="noopener">Open GA4 realtime</a>
-        <a class="btn btn-ghost" id="gaEvents" target="_blank" rel="noopener">Open events report</a>
-      </div>
-      <div class="updated" style="margin-top:var(--space-4)">GA4 numbers shown here are illustrative until the live connection is wired. Live counts are always available in GA4 via the buttons above.</div>
+      <div class="psub">Full website traffic for residualgrowthplan.com lives in Google Analytics. Jump straight to the report you need.</div>
+      <div class="ga-links" id="gaLinks"></div>
+      <div class="updated" style="margin-top:var(--space-4)">Opens in a new tab. You may be asked to sign in to your Google Analytics account.</div>
     </div>
   </div>
 </div>

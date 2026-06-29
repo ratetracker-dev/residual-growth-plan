@@ -12,9 +12,42 @@
   const isDark = matchMedia('(prefers-color-scheme:dark)').matches;
   document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
 
-  // ---- GA4 deep links (Measurement ID G-RKS48Y45SK) ----
-  document.getElementById('gaRealtime').href = 'https://analytics.google.com/analytics/web/#/p0/realtime/overview';
-  document.getElementById('gaEvents').href = 'https://analytics.google.com/analytics/web/';
+  // ---- GA4 launchpad: direct shortcuts into Google Analytics reports for residualgrowthplan.com ----
+  // Numbers live in GA4 itself (the account is owned by the user's org), so the dashboard just gets
+  // you there fast instead of trying to embed live data. Each card opens the relevant report area.
+  const GA_BASE = 'https://analytics.google.com/analytics/web/#/p0';
+  const gaReports = [
+    {
+      title: 'Realtime overview',
+      desc: 'Who is on the site right now, by page and source.',
+      href: GA_BASE + '/realtime/overview',
+      icon: '<circle cx="12" cy="12" r="3"/><path d="M3 12a9 9 0 0 1 9-9M21 12a9 9 0 0 1-9 9"/>'
+    },
+    {
+      title: 'Traffic acquisition',
+      desc: 'Where your visitors come from: search, social, direct, referral.',
+      href: GA_BASE + '/reports/explorer?params=_u..nav%3Dmaui&r=lifecycle-traffic-acquisition-v2',
+      icon: '<path d="M3 17l6-6 4 4 8-8"/><path d="M21 7v5h-5"/>'
+    },
+    {
+      title: 'Pages and screens',
+      desc: 'Most-viewed pages and how long people stay.',
+      href: GA_BASE + '/reports/explorer?params=_u..nav%3Dmaui&r=all-pages-and-screens',
+      icon: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>'
+    },
+    {
+      title: 'Events',
+      desc: 'Plan builds, partner CTA clicks, login links and more.',
+      href: GA_BASE + '/reports/explorer?params=_u..nav%3Dmaui&r=lifecycle-engagement-events',
+      icon: '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>'
+    }
+  ];
+  document.getElementById('gaLinks').innerHTML = gaReports.map(r =>
+    `<a class="ga-card" href="${r.href}" target="_blank" rel="noopener">`
+    + `<span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${r.icon}</svg></span>`
+    + `<span class="txt"><span class="ttl">${r.title} <span class="arr">&#8599;</span></span><span class="dsc">${r.desc}</span></span>`
+    + `</a>`
+  ).join('');
 
   // ---- Auth gate (identical to admin) ----
   const user = await RTAuth.getUser();
@@ -82,10 +115,8 @@
         signed_at: signed ? new Date(now - (ageDays - 2) * DAY).toISOString() : null
       });
     }
-    const ga = { users_30d: 540, plan_generated: plans.length, partner_cta_click: 86, login_link_sent: 71 };
-    return { plans, refs, ga };
+    return { plans, refs };
   }
-  const liveGA = { users_30d: null, plan_generated: livePlans.length, partner_cta_click: null, login_link_sent: null };
 
   // ===================== RENDER =====================
   let plansChart = null, tierChart = null;
@@ -105,14 +136,13 @@
     }
   };
 
-  function render(plans, refs, ga) {
+  function render(plans, refs) {
     renderKpis(plans, refs);
     renderPlansChart(plans);
     renderFunnel(plans, refs);
     renderSharers(plans, refs);
     renderTiers(plans);
     renderRefLinks(plans, refs);
-    renderGA(ga);
   }
 
   const within = (r, days) => (Date.now() - new Date(r.created_at).getTime()) < days * 864e5;
@@ -253,26 +283,10 @@
     }).join('')}</tbody></table></div>`;
   }
 
-  function renderGA(ga) {
-    // When a metric isn't wired to live GA yet, say so plainly instead of showing a bare dash
-    // (a lone dash reads like a broken fetch). The GA buttons below always give the real numbers.
-    const cell = (n, l) => {
-      const val = n == null
-        ? '<span class="ga-pending">In GA4</span>'
-        : n.toLocaleString('en-US');
-      return `<div class="stat"><div class="n">${val}</div><div class="l">${l}</div></div>`;
-    };
-    document.getElementById('gaStats').innerHTML =
-      cell(ga.users_30d, 'Visitors, last 30 days') +
-      cell(ga.plan_generated, 'Plans generated') +
-      cell(ga.partner_cta_click, 'Partner CTA clicks') +
-      cell(ga.login_link_sent, 'Login links sent');
-  }
-
   // ---- initial render (live) ----
   loading.classList.add('hidden');
   rootEl.classList.remove('hidden');
-  render(livePlans, liveRefs, liveGA);
+  render(livePlans, liveRefs);
 
   // ---- demo toggle ----
   const toggle = document.getElementById('demoToggle');
@@ -282,11 +296,11 @@
       document.body.setAttribute('data-demo', 'on');
       document.getElementById('updated').textContent = 'Demo data \u00b7 illustrative sample, not live results';
       demo = demo || demoDataset();
-      render(demo.plans, demo.refs, demo.ga);
+      render(demo.plans, demo.refs);
     } else {
       document.body.removeAttribute('data-demo');
       document.getElementById('updated').textContent = 'Live data \u00b7 updated ' + new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
-      render(livePlans, liveRefs, liveGA);
+      render(livePlans, liveRefs);
     }
   });
 })();
