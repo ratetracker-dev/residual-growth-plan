@@ -33,6 +33,17 @@
 .hp-field{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
 </style>
 <script src="analytics.js"></script>
+<script>
+/* Capture an incoming referral code if someone lands here directly with ?ref= */
+(function(){
+  try{
+    var code=new URLSearchParams(location.search).get('ref');
+    if(code && /^RGP-[A-Z0-9]{4,8}$/i.test(code) && !localStorage.getItem('rt_ref_pending')){
+      localStorage.setItem('rt_ref_pending', code.toUpperCase());
+    }
+  }catch(e){}
+})();
+</script>
 </head>
 <body>
 <div class="auth-hero">

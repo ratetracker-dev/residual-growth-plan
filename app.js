@@ -33,6 +33,9 @@
 
   try {
 
+  // Capture any incoming ?ref= code before we clean the URL below.
+  if (window.RTReferral && RTReferral.enabled) RTReferral.captureFromUrl();
+
   // If the magic link came back with an explicit auth error, surface it cleanly.
   const errDesc = new URLSearchParams(
     (window.location.hash || '').replace(/^#/, '') + '&' + (window.location.search || '').replace(/^\?/, '')
@@ -100,10 +103,15 @@
 
   function showReport(row) {
     show();
+    // Make sure a returning partner also has a share code (older plans predate referrals).
+    if (window.RTReferral && RTReferral.enabled && !row.ref_code) {
+      RTReferral.ensureRefCode(sb, row).catch(()=>{});
+    }
     RTReport.render(root, rowToPlan(row), {
       isAdmin: admin,
       onSignout: signOut,
-      onEdit: () => startWizard(rowToPlan(row))
+      onEdit: () => startWizard(rowToPlan(row)),
+      refCode: row.ref_code || null
     });
   }
 
@@ -138,6 +146,14 @@
       const isNewPlan = !currentRow;
       currentRow = saved;
       if (window.RTA) RTA.track(isNewPlan ? 'plan_generated' : 'plan_updated', { tier: saved.tier || 'unknown' });
+      // Referral: mint this partner's own share code, and attribute them to
+      // whoever referred them (if they arrived via a ?ref= link).
+      if (window.RTReferral && RTReferral.enabled) {
+        try {
+          await RTReferral.ensureRefCode(sb, saved);
+          await RTReferral.attributeReferral(sb, user, saved);
+        } catch (e) { console.error('referral', e); }
+      }
       setTimeout(() => showReport(saved), 700); // brief "building" beat
     });
     api.setWho(user.email);

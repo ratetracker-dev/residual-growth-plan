@@ -178,4 +178,78 @@
   }
 
   renderTable(rows);
+
+  // ====================== Referrals panel ======================
+  (async function referrals(){
+    const block = document.getElementById('referralsBlock');
+    if (!(window.RTReferral && RTReferral.enabled)) { if (block) block.style.display='none'; return; }
+
+    // Map ref_code -> plan owner name, so we can show "who referred them".
+    const byCode = {};
+    rows.forEach(r => { if (r.ref_code) byCode[r.ref_code.toUpperCase()] = r; });
+    // Map user_id -> plan, to name the referred person if they have a plan.
+    const byUser = {};
+    rows.forEach(r => { if (r.user_id) byUser[r.user_id] = r; });
+
+    const { data: refs, error: refErr } = await sb.from('gp_referrals').select('*').order('created_at',{ascending:false});
+    const refArea = document.getElementById('refTableArea');
+    if (refErr) { refArea.innerHTML = `<div class="empty">Could not load referrals: ${esc(refErr.message)}</div>`; return; }
+    let list = refs || [];
+
+    document.getElementById('refCount').textContent = list.length ? `(${list.length})` : '';
+
+    function refStats(){
+      const signed = list.filter(x=>x.status==='signed').length;
+      const sharers = new Set(list.map(x=>x.referrer_code)).size;
+      document.getElementById('refStats').innerHTML = `
+        <div class="stat"><div class="n">${list.length}</div><div class="l">People referred in</div></div>
+        <div class="stat"><div class="n">${sharers}</div><div class="l">Unique sharers</div></div>
+        <div class="stat"><div class="n">${signed}</div><div class="l">Referrals signed as partners</div></div>`;
+    }
+
+    function referrerName(code){
+      const p = byCode[(code||'').toUpperCase()];
+      return p ? `${p.first_name} ${p.last_name}` : '\u2013';
+    }
+    function referredName(rf){
+      const p = rf.referred_user_id ? byUser[rf.referred_user_id] : null;
+      if (p) return `${p.first_name} ${p.last_name}`;
+      return rf.referred_email || '\u2013';
+    }
+
+    function renderRefs(){
+      refStats();
+      if (!list.length){ refArea.innerHTML = `<div class="empty">No referrals yet. They'll appear here as partners share their link and new reps generate plans.</div>`; return; }
+      refArea.innerHTML = `<table class="partners">
+        <thead><tr>
+          <th>Referred person</th><th>Referred by</th><th>Their code</th><th>Status</th><th>When</th><th></th>
+        </tr></thead>
+        <tbody>${list.map(rf=>`
+          <tr data-id="${rf.id}">
+            <td><b>${esc(referredName(rf))}</b>${rf.referred_email?`<div class="muted" style="font-size:.82rem">${esc(rf.referred_email)}</div>`:''}</td>
+            <td>${esc(referrerName(rf.referrer_code))}</td>
+            <td><span class="refcode">${esc(rf.referrer_code)}</span></td>
+            <td><span class="statuspill ${rf.status==='signed'?'signed':'generated_plan'}">${rf.status==='signed'?'Signed':'Generated plan'}</span></td>
+            <td class="muted">${fmtDate(rf.created_at)}</td>
+            <td>${rf.status==='signed'
+              ? `<button class="signbtn undo" data-undo="${rf.id}">Undo</button>`
+              : `<button class="signbtn" data-sign="${rf.id}">Mark signed</button>`}</td>
+          </tr>`).join('')}</tbody></table>`;
+      refArea.querySelectorAll('[data-sign]').forEach(b => b.addEventListener('click', ()=>flip(b.dataset.sign, 'signed', b)));
+      refArea.querySelectorAll('[data-undo]').forEach(b => b.addEventListener('click', ()=>flip(b.dataset.undo, 'generated_plan', b)));
+    }
+
+    async function flip(id, status, btn){
+      const prev = btn.textContent; btn.textContent = '...'; btn.disabled = true;
+      const patch = status==='signed'
+        ? { status:'signed', signed_at:new Date().toISOString(), signed_by:user.id }
+        : { status:'generated_plan', signed_at:null, signed_by:null };
+      const { error } = await sb.from('gp_referrals').update(patch).eq('id', id);
+      if (error){ btn.textContent = prev; btn.disabled=false; alert('Could not update: '+error.message); return; }
+      const rf = list.find(x=>x.id===id); if (rf) Object.assign(rf, patch);
+      renderRefs();
+    }
+
+    renderRefs();
+  })();
 })();

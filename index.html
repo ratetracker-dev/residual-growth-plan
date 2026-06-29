@@ -13,6 +13,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="brand.css">
 <script src="analytics.js"></script>
+<script>
+/* Capture an incoming referral code (?ref=RGP-XXXX) before anything else, and
+   keep it on every internal link so it survives the trip to login + app. */
+(function(){
+  try{
+    var code=new URLSearchParams(location.search).get('ref');
+    if(code && /^RGP-[A-Z0-9]{4,8}$/i.test(code)){
+      localStorage.setItem('rt_ref_pending', code.toUpperCase());
+      if(window.RTA) RTA.track('arrived_via_referral',{ref:code.toUpperCase()});
+    }
+  }catch(e){}
+})();
+</script>
 <style>
   /* ---- landing-only styles ---- */
   .lp-nav{position:sticky;top:0;z-index:50;background:rgba(246,248,246,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}

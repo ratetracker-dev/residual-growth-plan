@@ -47,6 +47,29 @@ window.RTReport = (function () {
 
     const adminBtn = opts.isAdmin ? `<a class="linkbtn" href="admin.html">Admin dashboard</a>` : '';
 
+    // ---- Referral / affiliate card (feature-flagged) ----
+    const refEnabled = !!(window.RTReferral && RTReferral.enabled);
+    const refCode = opts.refCode || null;
+    const refLink = refEnabled && refCode ? RTReferral.shareLink(refCode) : '';
+    const shareMsg = 'I just mapped out my residual growth plan with this free tool from Rate Tracker. Thought of you, take a look:';
+    const referralCard = (refEnabled && refLink) ? `
+        <section class="refer-card no-print">
+          <div class="eyebrow">Know someone great in the industry?</div>
+          <h2>Pass this opportunity along</h2>
+          <p>Have friends or colleagues in payments you think we would be a great fit to partner with? Share your personal link below. And when you partner with Rate Tracker yourself, you unlock the ability to earn on every new partner you bring to us. Help us grow, and grow right alongside them.</p>
+          <div class="refer-linkrow">
+            <input type="text" id="refLink" readonly value="${esc(refLink)}" aria-label="Your personal share link">
+            <button class="refer-copy" id="refCopy" type="button">Copy link</button>
+          </div>
+          <div class="refer-share">
+            <a class="refer-btn" id="refEmail" href="mailto:?subject=${encodeURIComponent('A tool I think you should see')}&body=${encodeURIComponent(shareMsg + ' ' + refLink)}">Email</a>
+            <a class="refer-btn" id="refSms" href="sms:?&body=${encodeURIComponent(shareMsg + ' ' + refLink)}">Text</a>
+            <a class="refer-btn" id="refLi" href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(refLink)}" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="refer-btn" id="refFb" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(refLink)}" target="_blank" rel="noopener">Facebook</a>
+          </div>
+          <a class="btn refer-learn" href="https://growmyresidual.com" target="_blank" rel="noopener">Become a partner to learn more</a>
+        </section>` : '';
+
     root.innerHTML = `
       <div class="appbar no-print"><div class="wrap">
         <div class="logo"><img src="assets/rate-tracker-logo.jpg" alt="Rate Tracker"></div>
@@ -203,6 +226,8 @@ window.RTReport = (function () {
           <button class="btn no-print" id="downloadPdf" style="margin-top:var(--space-8)">\u2193 Download my plan (PDF)</button>
         </section>
 
+        ${referralCard}
+
         <section class="partner-cta no-print">
           <div class="eyebrow">Want a team behind your plan?</div>
           <h2>Ready to grow your residual for real?</h2>
@@ -277,6 +302,24 @@ window.RTReport = (function () {
     root.querySelector('#downloadPdf').addEventListener('click',()=>window.print());
     if(opts.onEdit) root.querySelector('#editPlan').addEventListener('click',opts.onEdit);
     if(opts.onSignout) root.querySelector('#signout').addEventListener('click',opts.onSignout);
+
+    // ---- referral card actions ----
+    (function(){
+      const copyBtn = root.querySelector('#refCopy'), linkEl = root.querySelector('#refLink');
+      if(copyBtn && linkEl){
+        copyBtn.addEventListener('click',()=>{
+          const val = linkEl.value;
+          const done = ()=>{ const t=copyBtn.textContent; copyBtn.textContent='Copied'; setTimeout(()=>copyBtn.textContent=t,1400); };
+          if(navigator.clipboard && navigator.clipboard.writeText){
+            navigator.clipboard.writeText(val).then(done).catch(()=>{ linkEl.select(); document.execCommand('copy'); done(); });
+          } else { linkEl.select(); document.execCommand('copy'); done(); }
+          if(window.RTA) RTA.track('referral_link_copied', { ref: (opts.refCode||'') });
+        });
+      }
+      root.querySelectorAll('.refer-btn').forEach(b => b.addEventListener('click', ()=>{
+        if(window.RTA) RTA.track('referral_share_clicked', { channel: b.id.replace('ref','').toLowerCase(), ref: (opts.refCode||'') });
+      }));
+    })();
   }
 
   return { render };

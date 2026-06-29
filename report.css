@@ -113,6 +113,21 @@ table{width:100%;border-collapse:collapse}
 .partner-cta p{max-width:54ch;margin:0 auto var(--space-8);color:rgba(255,255,255,.78);position:relative;z-index:1}
 .partner-cta .btn{position:relative;z-index:1}
 
+/* ---- Referral / affiliate card ---- */
+.refer-card{background:var(--surface);border:1.5px solid var(--border);border-top:4px solid var(--rt-green);border-radius:var(--radius-lg);padding:var(--space-10) var(--space-8);margin:var(--space-8) 0 0;text-align:center}
+.refer-card .eyebrow{color:var(--rt-green-deep)}
+.refer-card h2{font-family:'Poppins';font-size:clamp(1.4rem,1rem+1.6vw,2rem);color:var(--text);max-width:24ch;margin:.4rem auto var(--space-4)}
+.refer-card p{max-width:60ch;margin:0 auto var(--space-7);color:var(--text-muted)}
+.refer-linkrow{display:flex;gap:.6rem;max-width:560px;margin:0 auto var(--space-5)}
+.refer-linkrow input{flex:1;min-width:0;padding:.8rem 1rem;font-size:.95rem;font-family:'Open Sans',sans-serif;border:1.5px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--text);outline:none}
+.refer-copy{flex:none;background:var(--rt-green);color:#fff;font-family:'Poppins',sans-serif;font-weight:700;font-size:.9rem;border:none;padding:.8rem 1.3rem;border-radius:var(--radius);cursor:pointer;transition:background .15s;white-space:nowrap}
+.refer-copy:hover{background:var(--rt-green-deep)}
+.refer-share{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;margin-bottom:var(--space-8)}
+.refer-btn{display:inline-flex;align-items:center;gap:.4rem;background:transparent;border:1.5px solid var(--border);color:var(--text);font-family:'Poppins',sans-serif;font-weight:600;font-size:.88rem;padding:.6rem 1.1rem;border-radius:999px;text-decoration:none;transition:all .15s}
+.refer-btn:hover{border-color:var(--rt-green);color:var(--rt-green-deep);background:rgba(69,183,46,.06)}
+.refer-learn{display:inline-block}
+@media(max-width:560px){.refer-linkrow{flex-direction:column}.refer-copy{width:100%}}
+
 footer{border-top:1px solid var(--border);padding:var(--space-8) 0;margin-top:var(--space-12);color:var(--text-faint);font-size:.82rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--space-4)}
 
 /* print: clean PDF */
