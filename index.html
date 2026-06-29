@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Residual Growth Plan | A free planning tool for payments pros</title>
+<meta name="description" content="Answer a few quick questions and get a personalized, math-backed plan to grow your residual income. Built for reps and agents across the payments industry. Free, no strings.">
+<meta property="og:title" content="Residual Growth Plan">
+<meta property="og:description" content="A free, personalized plan to grow your residual income. Built for payments pros.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="brand.css">
+<script src="analytics.js"></script>
+<style>
+  /* ---- landing-only styles ---- */
+  .lp-nav{position:sticky;top:0;z-index:50;background:rgba(246,248,246,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+  .lp-nav-in{display:flex;align-items:center;justify-content:space-between;padding:var(--space-4) 0}
+  .brandmark{display:inline-flex;align-items:center;gap:.65rem;text-decoration:none;color:var(--text)}
+  .brandmark svg{flex:none}
+  .brandmark .bm-name{font-family:'Poppins',sans-serif;font-weight:700;font-size:1.06rem;letter-spacing:-.01em;line-height:1.1}
+  .brandmark .bm-sub{display:block;font-family:'Open Sans',sans-serif;font-weight:600;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint)}
+  .nav-cta{display:flex;align-items:center;gap:.5rem}
+  .nav-cta .btn{padding:.6rem 1.15rem;font-size:.86rem}
+
+  /* hero */
+  .hero{position:relative;overflow:hidden;padding:var(--space-16) 0 var(--space-12)}
+  .hero::after{content:"";position:absolute;right:-220px;top:-180px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(69,183,46,.16),transparent 62%);z-index:0;pointer-events:none}
+  .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;gap:var(--space-12);align-items:center}
+  .hero h1{font-size:clamp(2.1rem,4.6vw,3.3rem);font-weight:800;line-height:1.05;margin:var(--space-4) 0 var(--space-5)}
+  .hero h1 .hl{color:var(--rt-green-deep)}
+  .hero p.lede{font-size:1.12rem;color:var(--text-muted);max-width:34ch;margin-bottom:var(--space-8)}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:var(--space-4);align-items:center}
+  .hero-actions .btn{padding:.95rem 1.7rem;font-size:1rem}
+  .trustline{display:flex;flex-wrap:wrap;gap:var(--space-5);margin-top:var(--space-8);color:var(--text-muted);font-size:.9rem}
+  .trustline span{display:inline-flex;align-items:center;gap:.45rem}
+  .trustline svg{flex:none;color:var(--rt-green)}
+
+  /* hero card preview */
+  .hero-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);padding:var(--space-6);position:relative}
+  .hc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-5)}
+  .hc-head .t{font-family:'Poppins',sans-serif;font-weight:700;font-size:.95rem}
+  .hc-tier{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--rt-green-deep);background:rgba(69,183,46,.12);padding:.32rem .6rem;border-radius:999px}
+  .hc-kpis{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);margin-bottom:var(--space-5)}
+  .hc-kpi{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);padding:var(--space-4)}
+  .hc-kpi .k{font-size:.66rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text-faint);margin-bottom:.3rem}
+  .hc-kpi .v{font-family:'Poppins',sans-serif;font-weight:800;font-size:1.5rem;line-height:1;color:var(--text)}
+  .hc-kpi .v small{font-size:.8rem;font-weight:600;color:var(--text-muted)}
+  .hc-chartwrap{height:150px;position:relative}
+  .hc-foot{text-align:center;font-size:.72rem;color:var(--text-faint);margin-top:var(--space-4)}
+
+  /* section shell */
+  .section{padding:var(--space-16) 0}
+  .section-alt{background:var(--surface)}
+  .section-head{text-align:center;max-width:48ch;margin:0 auto var(--space-12)}
+  .section-head h2{font-size:clamp(1.7rem,3vw,2.2rem);font-weight:800;margin:.5rem 0 .75rem}
+  .section-head p{color:var(--text-muted);font-size:1.05rem}
+
+  /* how it works */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-6)}
+  .step{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-8) var(--space-6)}
+  .section-alt .step{background:var(--surface-2)}
+  .step .num{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--rt-ink);color:#fff;font-family:'Poppins',sans-serif;font-weight:800;font-size:1.1rem;margin-bottom:var(--space-5)}
+  .step h3{font-size:1.18rem;font-weight:700;margin-bottom:.5rem}
+  .step p{color:var(--text-muted);font-size:.96rem}
+
+  /* teaser sample */
+  .teaser-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-12);align-items:center}
+  .teaser-kpis{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5)}
+  .tk{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:var(--space-6)}
+  .section-alt .tk{background:var(--bg)}
+  .tk .k{font-size:.68rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text-faint);margin-bottom:.4rem}
+  .tk .v{font-family:'Poppins',sans-serif;font-weight:800;font-size:2rem;line-height:1;color:var(--rt-green-deep)}
+  .tk .v small{font-size:.95rem;color:var(--text-muted);font-weight:600}
+  .tk .cap{font-size:.84rem;color:var(--text-muted);margin-top:.4rem}
+  .teaser-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:var(--space-6)}
+  .section-alt .teaser-panel{background:var(--bg)}
+  .teaser-panel .pt{font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;margin-bottom:.25rem}
+  .teaser-panel .ps{font-size:.86rem;color:var(--text-muted);margin-bottom:var(--space-5)}
+  .teaser-chartwrap{height:220px;position:relative}
+  .teaser-note{text-align:center;color:var(--text-faint);font-size:.85rem;margin-top:var(--space-8)}
+
+  /* partner band */
+  .partner{background:var(--rt-ink);color:#fff;border-radius:var(--radius-lg);padding:var(--space-12);position:relative;overflow:hidden;text-align:center}
+  .partner::after{content:"";position:absolute;left:-120px;bottom:-160px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(69,183,46,.22),transparent 64%)}
+  .partner-in{position:relative;z-index:1;max-width:52ch;margin:0 auto}
+  .partner .eyebrow{color:var(--rt-green)}
+  .partner h2{font-size:clamp(1.6rem,2.8vw,2.1rem);font-weight:800;color:#fff;margin:.5rem 0 .75rem}
+  .partner p{color:rgba(255,255,255,.78);font-size:1.05rem;margin-bottom:var(--space-8)}
+  .partner .btn-ghost{color:#fff;border-color:rgba(255,255,255,.35)}
+  .partner .btn-ghost:hover{background:rgba(255,255,255,.08)}
+  .partner-actions{display:flex;flex-wrap:wrap;gap:var(--space-4);justify-content:center}
+
+  /* faq */
+  .faq{max-width:760px;margin:0 auto;display:grid;gap:var(--space-4)}
+  .faq details{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:var(--space-5) var(--space-6)}
+  .section-alt .faq details{background:var(--surface-2)}
+  .faq summary{font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";font-size:1.4rem;color:var(--rt-green-deep);font-weight:400;line-height:1}
+  .faq details[open] summary::after{content:"\2212"}
+  .faq p{color:var(--text-muted);font-size:.96rem;margin-top:var(--space-4)}
+
+  /* footer */
+  .lp-footer{background:var(--rt-ink);color:rgba(255,255,255,.65);padding:var(--space-12) 0 var(--space-8);font-size:.88rem}
+  .lp-footer .ff{display:flex;flex-wrap:wrap;justify-content:space-between;gap:var(--space-6);align-items:center;margin-bottom:var(--space-8)}
+  .lp-footer .ff .brandmark{color:#fff}
+  .lp-footer .ff .brandmark .bm-sub{color:rgba(255,255,255,.45)}
+  .lp-footer .flinks{display:flex;gap:var(--space-6);flex-wrap:wrap}
+  .lp-footer a{color:rgba(255,255,255,.75);text-decoration:none}
+  .lp-footer a:hover{color:#fff}
+  .lp-footer .legal{border-top:1px solid rgba(255,255,255,.12);padding-top:var(--space-6);display:flex;flex-wrap:wrap;justify-content:space-between;gap:var(--space-4);color:rgba(255,255,255,.5);font-size:.82rem}
+
+  @media (max-width:860px){
+    .hero-grid,.teaser-grid{grid-template-columns:1fr;gap:var(--space-8)}
+    .steps{grid-template-columns:1fr}
+    .hero{padding:var(--space-12) 0 var(--space-8)}
+    .hero p.lede{max-width:none}
+    .hc-kpis,.teaser-kpis{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:440px){
+    .hc-kpis,.teaser-kpis{grid-template-columns:1fr}
+    .nav-cta .ghost-hide{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="lp-nav">
+  <div class="wrap lp-nav-in">
+    <a class="brandmark" href="index.html" aria-label="Residual Growth Plan home">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true">
+        <rect x="1.2" y="1.2" width="31.6" height="31.6" rx="9" fill="#212121"/>
+        <path d="M8 23.5 L14 16 L18.5 20 L26 10.5" stroke="#45B72E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="26" cy="10.5" r="2.4" fill="#45B72E"/>
+      </svg>
+      <span>
+        <span class="bm-name">Residual Growth Plan</span>
+        <span class="bm-sub">Powered by Rate Tracker</span>
+      </span>
+    </a>
+    <div class="nav-cta">
+      <a class="btn btn-ghost ghost-hide" href="https://growmyresidual.com" target="_blank" rel="noopener">Become a partner</a>
+      <a class="btn" href="login.html">Build my plan</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Free for payments reps &amp; agents</div>
+      <h1>Know exactly what it takes to <span class="hl">grow your residual.</span></h1>
+      <p class="lede">Answer a few quick questions and get a personalized, math-backed plan that turns your income goal into a weekly game plan you can actually run.</p>
+      <div class="hero-actions">
+        <a class="btn" href="login.html">Build my free plan</a>
+        <a class="btn btn-ghost" href="#how">See how it works</a>
+      </div>
+      <div class="trustline">
+        <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Takes about 3 minutes</span>
+        <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> No password, no credit card</span>
+        <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Yours to keep as a PDF</span>
+      </div>
+    </div>
+
+    <!-- live mini preview -->
+    <div class="hero-card" aria-label="Sample plan preview">
+      <div class="hc-head">
+        <span class="t">Your 13-month snapshot</span>
+        <span class="hc-tier">Operator tier</span>
+      </div>
+      <div class="hc-kpis">
+        <div class="hc-kpi"><div class="k">Residual goal</div><div class="v">$20K<small>/mo</small></div></div>
+        <div class="hc-kpi"><div class="k">New accounts</div><div class="v">134</div></div>
+        <div class="hc-kpi"><div class="k">Accounts / month</div><div class="v">~11</div></div>
+        <div class="hc-kpi"><div class="k">Prospects / week</div><div class="v">18<small>&ndash;22</small></div></div>
+      </div>
+      <div class="hc-chartwrap"><canvas id="heroChart"></canvas></div>
+      <div class="hc-foot">Illustrative sample &middot; your numbers are built from your own goals</div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="section section-alt" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">How it works</div>
+      <h2>From a number in your head to a plan on your calendar</h2>
+      <p>No spreadsheets, no guesswork. The plan does the math so you can focus on the work.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>Tell us your goal</h3>
+        <p>Share your income targets and which prospecting channels you actually use. A few quick questions, that's it.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>Get your numbers</h3>
+        <p>We translate your goal into accounts, monthly targets, and weekly prospecting activity backed by real portfolio math.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>Run the play</h3>
+        <p>You get channel-by-channel tactics, a growth curve, and a downloadable plan you can work from every week.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TEASER SAMPLE ===== -->
+<section class="section" id="sample">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">A peek inside</div>
+      <h2>See the kind of clarity you'll get</h2>
+      <p>Here's a slice of a sample plan. Build your own to unlock the full breakdown, channel tactics, and your reverse-engineer goal slider.</p>
+    </div>
+    <div class="teaser-grid">
+      <div class="teaser-kpis">
+        <div class="tk"><div class="k">Accounts to hit goal</div><div class="v">134</div><div class="cap">Funding your 13-month residual target.</div></div>
+        <div class="tk"><div class="k">New accounts / month</div><div class="v">~11</div><div class="cap">A steady, repeatable monthly pace.</div></div>
+        <div class="tk"><div class="k">Prospects / week</div><div class="v">18<small>&ndash;22</small></div><div class="cap">Qualified conversations to start each week.</div></div>
+        <div class="tk"><div class="k">Hot list size</div><div class="v">36</div><div class="cap">Active opportunities to keep warm.</div></div>
+      </div>
+      <div class="teaser-panel">
+        <div class="pt">Projected monthly residual</div>
+        <div class="ps">A realistic compounding curve as new accounts stack up over 13 months.</div>
+        <div class="teaser-chartwrap"><canvas id="teaserChart"></canvas></div>
+      </div>
+    </div>
+    <p class="teaser-note">This is just a sample. Your plan is built entirely from your own goals and channels.</p>
+    <div style="text-align:center;margin-top:var(--space-8)">
+      <a class="btn" href="login.html" style="padding:.95rem 1.9rem;font-size:1rem">Build my free plan</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PARTNER BAND ===== -->
+<section class="section section-alt">
+  <div class="wrap">
+    <div class="partner">
+      <div class="partner-in">
+        <div class="eyebrow">Want more than a plan?</div>
+        <h2>Grow your residual with a team behind you</h2>
+        <p>The plan is free, no strings. If you're ready to build a real residual portfolio with the tools, support, and economics to back it, see what partnering looks like.</p>
+        <div class="partner-actions">
+          <a class="btn" href="https://growmyresidual.com" target="_blank" rel="noopener">Become a partner</a>
+          <a class="btn btn-ghost" href="login.html">Start with my free plan</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Good to know</div>
+      <h2>Questions, answered</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Is it really free?</summary>
+        <p>Yes. The Residual Growth Plan is free to build and yours to download. There's no credit card and no obligation. It's a resource for the payments community.</p>
+      </details>
+      <details>
+        <summary>Do I have to be a Rate Tracker partner to use it?</summary>
+        <p>No. Anyone in the payments industry can build a plan, whether you're already with us or not. If you like what you see and want to go further, partnering is one option, but it's never required.</p>
+      </details>
+      <details>
+        <summary>How long does it take?</summary>
+        <p>About three minutes. You answer a short set of questions about your goals and prospecting channels, and your plan generates automatically.</p>
+      </details>
+      <details>
+        <summary>How do I log in?</summary>
+        <p>Enter your email and we send you a secure one-tap login link. No password to remember. Open the link from your inbox and you're in.</p>
+      </details>
+      <details>
+        <summary>Where do the numbers come from?</summary>
+        <p>The plan uses real portfolio economics from the payments business, including typical residual per account and close rates, then scales the activity to match the goal you set.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FINAL CTA ===== -->
+<section class="section section-alt">
+  <div class="wrap" style="text-align:center;max-width:46ch;margin:0 auto">
+    <h2 style="font-size:clamp(1.7rem,3vw,2.3rem);font-weight:800;margin-bottom:.75rem">Your residual can grow as big as you want it to.</h2>
+    <p style="color:var(--text-muted);font-size:1.08rem;margin-bottom:var(--space-8)">Build the plan, then go run it.</p>
+    <a class="btn" href="login.html" style="padding:1rem 2rem;font-size:1.05rem">Build my free plan</a>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="lp-footer">
+  <div class="wrap">
+    <div class="ff">
+      <a class="brandmark" href="index.html">
+        <svg width="30" height="30" viewBox="0 0 34 34" fill="none" aria-hidden="true">
+          <rect x="1.2" y="1.2" width="31.6" height="31.6" rx="9" fill="#fff" fill-opacity=".08"/>
+          <path d="M8 23.5 L14 16 L18.5 20 L26 10.5" stroke="#45B72E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="26" cy="10.5" r="2.4" fill="#45B72E"/>
+        </svg>
+        <span>
+          <span class="bm-name">Residual Growth Plan</span>
+          <span class="bm-sub">Powered by Rate Tracker</span>
+        </span>
+      </a>
+      <div class="flinks">
+        <a href="login.html">Build my plan</a>
+        <a href="#how">How it works</a>
+        <a href="#faq">FAQ</a>
+        <a href="https://growmyresidual.com" target="_blank" rel="noopener">Become a partner</a>
+      </div>
+    </div>
+    <div class="legal">
+      <span>Rate Tracker &middot; Payments &middot; Capital &middot; Profit</span>
+      <span>7100 E Pleasant Valley Rd, Suite 280, Independence, OH 44131 &middot; ratetracker.io</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script>
+(function(){
+  function curve(){ // 13 points, compounding-ish residual growth toward ~$20k/mo
+    var pts=[], v=1300;
+    for(var i=0;i<13;i++){ pts.push(Math.round(v)); v += 900 + i*120; }
+    return pts;
+  }
+  var labels=['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13'];
+  var data=curve();
+  var green=getComputedStyle(document.documentElement).getPropertyValue('--rt-green').trim()||'#45B72E';
+  function mk(id,opts){
+    var el=document.getElementById(id); if(!el||!window.Chart) return;
+    new Chart(el,{type:'line',
+      data:{labels:labels,datasets:[{data:data,borderColor:green,
+        backgroundColor:'rgba(69,183,46,.12)',fill:true,tension:.35,borderWidth:3,
+        pointRadius:opts.points?4:0,pointBackgroundColor:green,pointBorderColor:'#fff',pointBorderWidth:2}]},
+      options:{responsive:true,maintainAspectRatio:false,animation:{duration:900},
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return '$'+c.parsed.y.toLocaleString()+'/mo';}}}},
+        scales:{y:{grid:{color:'rgba(0,0,0,.06)'},ticks:{display:opts.yticks!==false,color:'#9aa89c',callback:function(v){return '$'+(v/1000)+'K';}}},
+                x:{grid:{display:false},ticks:{display:opts.xticks!==false,color:'#9aa89c',maxRotation:0}}}}});
+  }
+  mk('heroChart',{points:false,yticks:false,xticks:false});
+  mk('teaserChart',{points:true,yticks:true,xticks:true});
+})();
+</script>
+</body>
+</html>

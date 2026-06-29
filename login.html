@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in | Residual Growth Plan</title>
+<meta name="description" content="Log in to build your personalized Rate Tracker Residual Growth Plan.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="brand.css">
+<style>
+.auth-hero{background:var(--rt-ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:var(--space-6);position:relative;overflow:hidden}
+.auth-hero::after{content:"";position:absolute;right:-160px;top:-160px;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(69,183,46,.28),transparent 65%)}
+.auth-hero::before{content:"";position:absolute;left:-160px;bottom:-160px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(20,126,255,.14),transparent 65%)}
+.auth-card{position:relative;z-index:2;width:100%;max-width:440px;background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);padding:var(--space-12) var(--space-10);text-align:center}
+.auth-card .logo{display:inline-flex;margin-bottom:var(--space-8)}
+.auth-card .logo img{height:56px;box-shadow:0 4px 18px rgba(0,0,0,.12)}
+.auth-card h1{font-size:1.7rem;font-weight:800;margin-bottom:.5rem}
+.auth-card .sub{color:var(--text-muted);font-size:1rem;margin-bottom:var(--space-8)}
+.auth-card label{display:block;text-align:left;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:.5rem}
+.auth-card input[type=email]{width:100%;padding:.9rem 1rem;font-size:1rem;font-family:'Open Sans',sans-serif;border:1.5px solid var(--border);border-radius:var(--radius);background:var(--surface-2);color:var(--text);outline:none;transition:border-color .15s}
+.auth-card input[type=email]:focus{border-color:var(--rt-green)}
+.auth-card .btn{width:100%;margin-top:var(--space-6);padding:.95rem}
+.note{font-size:.82rem;color:var(--text-faint);margin-top:var(--space-6);line-height:1.5}
+.sent{background:rgba(69,183,46,.1);border:1px solid rgba(69,183,46,.3);border-radius:var(--radius);padding:var(--space-6);text-align:left}
+.sent h2{font-size:1.15rem;margin-bottom:.5rem;color:var(--rt-green-deep)}
+.sent p{font-size:.92rem;color:var(--text-muted)}
+.sent .em{font-weight:700;color:var(--text)}
+.err{color:#c0392b;font-size:.88rem;margin-top:var(--space-4);min-height:1.2em}
+.footer-mark{position:absolute;bottom:var(--space-6);left:0;right:0;text-align:center;color:rgba(255,255,255,.4);font-size:.78rem;z-index:2}
+.hidden{display:none}
+.hp-field{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+</style>
+<script src="analytics.js"></script>
+</head>
+<body>
+<div class="auth-hero">
+  <div class="auth-card">
+    <div class="logo"><img src="assets/rate-tracker-logo.jpg" alt="Rate Tracker"></div>
+
+    <div id="loadingState" class="center-screen" style="min-height:auto;padding:var(--space-8)">
+      <span class="spin" style="border-color:rgba(69,183,46,.25);border-top-color:var(--rt-green)"></span>
+    </div>
+
+    <div id="loginState" class="hidden">
+      <h1>Your Residual Growth Plan</h1>
+      <p class="sub">Enter your email and we'll send you a secure one-tap login link. No password to remember.</p>
+      <form id="loginForm">
+        <label for="email">Work email</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+        <!-- honeypot: hidden from humans, bots tend to fill it. Do not remove. -->
+        <div class="hp-field" aria-hidden="true">
+          <label for="company_site">Company website</label>
+          <input type="text" id="company_site" name="company_site" tabindex="-1" autocomplete="off">
+        </div>
+        <button type="submit" class="btn" id="submitBtn">Email me my login link</button>
+        <div class="err" id="errMsg"></div>
+      </form>
+      <p class="note">We use a passwordless magic link. Click it from your inbox and you're in, then answer a few quick questions to generate your personalized plan.</p>
+    </div>
+
+    <div id="sentState" class="hidden">
+      <div class="sent">
+        <h2>Check your inbox</h2>
+        <p>We sent a login link to <span class="em" id="sentEmail"></span>. Open it on this device and tap <span class="em">"Log in to your Growth Plan"</span> to continue.</p>
+      </div>
+      <p class="note">Didn't get it? Check spam, or <a href="#" id="resendLink" style="color:var(--rt-green-deep);font-weight:600">send it again</a>.</p>
+    </div>
+  </div>
+  <div class="footer-mark">Rate Tracker &middot; Payments &middot; Capital &middot; Profit</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const loading = $('#loadingState'), login = $('#loginState'), sent = $('#sentState');
+function show(el){ [loading,login,sent].forEach(x=>x.classList.add('hidden')); el.classList.remove('hidden'); }
+
+// If already logged in, route them onward (admins -> dashboard if they want; everyone -> their plan)
+(async function init(){
+  const user = await RTAuth.getUser();
+  if(user){ window.location.href = 'app.html'; return; }
+  show(login);
+})();
+
+let lastEmail = '';
+const pageLoadedAt = Date.now();
+$('#loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const email = $('#email').value.trim();
+  const btn = $('#submitBtn'), err = $('#errMsg');
+  err.textContent = '';
+  // --- anti-spam: honeypot + minimum time-on-page ---
+  // The honeypot field is invisible to humans. If it's filled, it's a bot.
+  if($('#company_site') && $('#company_site').value){
+    // Silently fake success so bots get no useful signal.
+    lastEmail = email || 'you@example.com'; $('#sentEmail').textContent = lastEmail; show(sent); return;
+  }
+  // Forms submitted in under ~1.5s are almost always automated.
+  if(Date.now() - pageLoadedAt < 1500){
+    err.textContent = 'Please take a moment, then try again.'; return;
+  }
+  if(!email){ err.textContent = 'Please enter your email.'; return; }
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Sending...';
+  const redirect = window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + 'app.html';
+  const { error } = await RTAuth.sendMagicLink(email, redirect);
+  btn.disabled = false; btn.textContent = 'Email me my login link';
+  if(error){ err.textContent = error.message || 'Something went wrong. Please try again.'; return; }
+  lastEmail = email; $('#sentEmail').textContent = email; show(sent);
+  if(window.RTA) RTA.track('login_link_sent', { method: 'magic_link' });
+});
+
+$('#resendLink').addEventListener('click', async e => {
+  e.preventDefault();
+  if(!lastEmail) return;
+  const redirect = window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + 'app.html';
+  await RTAuth.sendMagicLink(lastEmail, redirect);
+});
+</script>
+</body>
+</html>

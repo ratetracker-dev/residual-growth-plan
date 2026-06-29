@@ -1,0 +1,39 @@
+/* ==========================================================================
+   Rate Tracker - Shared brand stylesheet (from the approved sample report)
+   ========================================================================== */
+:root{
+  --rt-green:#45B72E; --rt-green-deep:#256916; --rt-ink:#212121; --rt-ink-2:#2F2F2F;
+  --bg:#f6f8f6; --surface:#ffffff; --surface-2:#f0f4f0; --border:#e2e8e2;
+  --text:#15171a; --text-muted:#5d6b60; --text-faint:#9aa89c;
+  --space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;--space-6:1.5rem;
+  --space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;
+  --radius:14px;--radius-lg:22px;
+  --shadow:0 1px 2px rgba(20,30,20,.04),0 8px 24px rgba(20,40,20,.06);
+  --shadow-lg:0 20px 60px rgba(20,50,20,.12);
+}
+[data-theme="dark"]{
+  --bg:#0e100f;--surface:#16191a;--surface-2:#1c211d;--border:#2a302b;
+  --text:#e8efe8;--text-muted:#9fb0a1;--text-faint:#6b7a6d;--rt-ink:#e8efe8;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+  --shadow-lg:0 20px 60px rgba(0,0,0,.5);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Open Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'Poppins',sans-serif;line-height:1.15;letter-spacing:-.02em}
+a{color:inherit}
+.wrap{max-width:980px;margin:0 auto;padding:0 var(--space-5)}
+.eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--rt-green-deep)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;background:var(--rt-green);color:#06250a;font-weight:700;padding:.8rem 1.4rem;border-radius:999px;text-decoration:none;font-size:.95rem;border:none;cursor:pointer;transition:transform .12s ease,box-shadow .12s ease;font-family:'Poppins',sans-serif}
+.btn:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(69,183,46,.3)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn-ghost:hover{box-shadow:none;background:var(--surface-2)}
+.toggle{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#fff;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;cursor:pointer}
+
+/* shared logo chip */
+.logo img{height:48px;width:auto;display:block;background:#fff;padding:7px 13px;border-radius:13px;box-shadow:0 4px 16px rgba(0,0,0,.18)}
+
+/* spinner */
+.spin{width:18px;height:18px;border:2px solid rgba(6,37,10,.25);border-top-color:#06250a;border-radius:50%;animation:rt-spin .7s linear infinite;display:inline-block}
+@keyframes rt-spin{to{transform:rotate(360deg)}}
+.center-screen{min-height:100vh;display:grid;place-items:center;padding:var(--space-6)}
