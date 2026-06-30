@@ -15,7 +15,12 @@
 /* ---- app shell / top bar ---- */
 .appbar{background:var(--rt-ink);color:#fff;padding:var(--space-4) 0;position:sticky;top:0;z-index:50}
 .appbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4)}
-.appbar .logo img{height:38px;padding:5px 10px;border-radius:10px}
+.appbar .logo img{height:34px;display:block;background:#fff;padding:5px 9px;border-radius:9px}
+.appbar .brandgroup{display:flex;align-items:center;gap:var(--space-3)}
+.appbar .brandtag{display:flex;flex-direction:column;line-height:1.15;padding-left:var(--space-3);border-left:1px solid rgba(255,255,255,.18)}
+.appbar .brandtag .bt-name{font-family:'Poppins',sans-serif;font-weight:700;font-size:.95rem;color:#fff}
+.appbar .brandtag .bt-sub{font-family:'Open Sans',sans-serif;font-weight:600;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-top:.15rem}
+@media(max-width:560px){.appbar .brandtag{display:none}}
 .appbar .right{display:flex;align-items:center;gap:var(--space-3)}
 .appbar .who{font-size:.82rem;color:rgba(255,255,255,.6);max-width:42vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .linkbtn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:.82rem;font-weight:600;padding:.45rem .9rem;border-radius:999px;cursor:pointer;text-decoration:none;font-family:'Poppins',sans-serif}

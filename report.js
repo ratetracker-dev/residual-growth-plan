@@ -76,7 +76,10 @@ window.RTReport = (function () {
 
     root.innerHTML = `
       <div class="appbar no-print"><div class="wrap">
-        <div class="logo"><img src="assets/rate-tracker-logo.jpg" alt="Rate Tracker"></div>
+        <div class="brandgroup">
+          <div class="logo"><img src="assets/rate-tracker-logo.jpg" alt="Rate Tracker"></div>
+          <div class="brandtag"><span class="bt-name">Residual Growth Plan</span><span class="bt-sub">Powered by Rate Tracker</span></div>
+        </div>
         <div class="right">
           ${adminBtn}
           <button class="linkbtn" id="editPlan">Edit my answers</button>

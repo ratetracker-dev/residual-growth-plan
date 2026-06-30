@@ -32,8 +32,22 @@
   .lp-nav-in{display:flex;align-items:center;justify-content:space-between;padding:var(--space-4) 0}
   .brandmark{display:inline-flex;align-items:center;gap:.65rem;text-decoration:none;color:var(--text)}
   .brandmark svg{flex:none}
+  .brandmark .bm-logo{flex:none;height:30px;width:auto;display:block}
   .brandmark .bm-name{font-family:'Poppins',sans-serif;font-weight:700;font-size:1.06rem;letter-spacing:-.01em;line-height:1.1}
   .brandmark .bm-sub{display:block;font-family:'Open Sans',sans-serif;font-weight:600;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint)}
+  .brandmark .bm-div{width:1px;height:26px;background:var(--border);margin:0 .15rem}
+  /* hero brand badge */
+  .hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:.4rem .9rem;font-family:'Open Sans',sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);box-shadow:var(--shadow);margin-bottom:var(--space-4)}
+  .hero-badge .dot{width:16px;height:16px;border-radius:5px;background:var(--rt-ink);display:inline-flex;align-items:center;justify-content:center;flex:none}
+  .hero-badge .dot svg{width:11px;height:11px}
+  .hero-badge b{color:var(--text);font-weight:800}
+  /* brought-to-you-by trust strip */
+  .rt-strip{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface)}
+  .rt-strip-in{display:flex;align-items:center;justify-content:center;gap:var(--space-5);padding:var(--space-6) 0;flex-wrap:wrap;text-align:center}
+  .rt-strip img{height:52px;width:auto;display:block;flex:none}
+  .rt-strip .rt-strip-txt{max-width:52ch;color:var(--text-muted);font-size:.98rem;line-height:1.5}
+  .rt-strip .rt-strip-txt b{font-family:'Poppins',sans-serif;color:var(--text);font-weight:700}
+  @media(max-width:560px){.rt-strip-in{flex-direction:column;gap:var(--space-4)}.rt-strip img{height:44px}}
   .nav-cta{display:flex;align-items:center;gap:.5rem}
   .nav-cta .btn{padding:.6rem 1.15rem;font-size:.86rem}
 
@@ -120,6 +134,11 @@
   .lp-footer .ff{display:flex;flex-wrap:wrap;justify-content:space-between;gap:var(--space-6);align-items:center;margin-bottom:var(--space-8)}
   .lp-footer .ff .brandmark{color:#fff}
   .lp-footer .ff .brandmark .bm-sub{color:rgba(255,255,255,.45)}
+  .lp-footer .foot-logo{display:inline-flex;align-items:center;gap:var(--space-4)}
+  .lp-footer .foot-logo .chip{background:#fff;border-radius:12px;padding:.55rem .8rem;display:inline-flex}
+  .lp-footer .foot-logo .chip img{height:46px;width:auto;display:block}
+  .lp-footer .foot-logo .fl-txt{font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;color:#fff;line-height:1.2}
+  .lp-footer .foot-logo .fl-txt small{display:block;font-family:'Open Sans',sans-serif;font-weight:600;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:.2rem}
   .lp-footer .flinks{display:flex;gap:var(--space-6);flex-wrap:wrap}
   .lp-footer a{color:rgba(255,255,255,.75);text-decoration:none}
   .lp-footer a:hover{color:#fff}
@@ -143,7 +162,7 @@
 <!-- ===== NAV ===== -->
 <nav class="lp-nav">
   <div class="wrap lp-nav-in">
-    <a class="brandmark" href="index.html" aria-label="Residual Growth Plan home">
+    <a class="brandmark" href="index.html" aria-label="Residual Growth Plan, powered by Rate Tracker">
       <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true">
         <rect x="1.2" y="1.2" width="31.6" height="31.6" rx="9" fill="#212121"/>
         <path d="M8 23.5 L14 16 L18.5 20 L26 10.5" stroke="#45B72E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -165,6 +184,7 @@
 <header class="hero">
   <div class="wrap hero-grid">
     <div>
+      <span class="hero-badge"><span class="dot"><svg viewBox="0 0 34 34" fill="none" aria-hidden="true"><path d="M8 23.5 L14 16 L18.5 20 L26 10.5" stroke="#45B72E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="26" cy="10.5" r="2.6" fill="#45B72E"/></svg></span>A <b>Rate Tracker</b> tool</span>
       <div class="eyebrow">Free for payments reps &amp; agents</div>
       <h1>Know exactly what it takes to <span class="hl">grow your residual.</span></h1>
       <p class="lede">Answer a few quick questions and get a personalized, math-backed plan that turns your income goal into a weekly game plan you can actually run.</p>
@@ -196,6 +216,14 @@
     </div>
   </div>
 </header>
+
+<!-- ===== BROUGHT TO YOU BY RATE TRACKER ===== -->
+<section class="rt-strip">
+  <div class="wrap rt-strip-in">
+    <img src="assets/rate-tracker-logo.jpg" alt="Rate Tracker - Payments, Capital, Profit">
+    <p class="rt-strip-txt">Brought to you by <b>Rate Tracker</b>, a payments company built for the people who sell it. We make this plan free because when reps grow, the whole industry grows.</p>
+  </div>
+</section>
 
 <!-- ===== HOW IT WORKS ===== -->
 <section class="section section-alt" id="how">
@@ -315,17 +343,10 @@
 <footer class="lp-footer">
   <div class="wrap">
     <div class="ff">
-      <a class="brandmark" href="index.html">
-        <svg width="30" height="30" viewBox="0 0 34 34" fill="none" aria-hidden="true">
-          <rect x="1.2" y="1.2" width="31.6" height="31.6" rx="9" fill="#fff" fill-opacity=".08"/>
-          <path d="M8 23.5 L14 16 L18.5 20 L26 10.5" stroke="#45B72E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="26" cy="10.5" r="2.4" fill="#45B72E"/>
-        </svg>
-        <span>
-          <span class="bm-name">Residual Growth Plan</span>
-          <span class="bm-sub">Powered by Rate Tracker</span>
-        </span>
-      </a>
+      <div class="foot-logo">
+        <span class="chip"><img src="assets/rate-tracker-logo.jpg" alt="Rate Tracker"></span>
+        <span class="fl-txt">Residual Growth Plan<small>Powered by Rate Tracker</small></span>
+      </div>
       <div class="flinks">
         <a href="login.html">Build my plan</a>
         <a href="#how">How it works</a>
