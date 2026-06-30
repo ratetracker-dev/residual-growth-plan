@@ -37,17 +37,17 @@
   .brandmark .bm-sub{display:block;font-family:'Open Sans',sans-serif;font-weight:600;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint)}
   .brandmark .bm-div{width:1px;height:26px;background:var(--border);margin:0 .15rem}
   /* hero brand badge */
-  .hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:.4rem .9rem;font-family:'Open Sans',sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);box-shadow:var(--shadow);margin-bottom:var(--space-4)}
-  .hero-badge .dot{width:16px;height:16px;border-radius:5px;background:var(--rt-ink);display:inline-flex;align-items:center;justify-content:center;flex:none}
-  .hero-badge .dot svg{width:11px;height:11px}
-  .hero-badge b{color:var(--text);font-weight:800}
+  .hero-badge{display:inline-flex;align-items:center;gap:.55rem;background:#fff;border:1px solid var(--border);border-radius:999px;padding:.42rem .85rem .42rem .7rem;box-shadow:var(--shadow);margin-bottom:var(--space-4)}
+  .hero-badge img{height:30px;width:auto;display:block;flex:none}
+  .hero-badge .bdg-sep{width:1px;height:20px;background:var(--border);flex:none}
+  .hero-badge .bdg-txt{font-family:'Open Sans',sans-serif;font-weight:700;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap}
   /* brought-to-you-by trust strip */
-  .rt-strip{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface)}
-  .rt-strip-in{display:flex;align-items:center;justify-content:center;gap:var(--space-5);padding:var(--space-6) 0;flex-wrap:wrap;text-align:center}
-  .rt-strip img{height:52px;width:auto;display:block;flex:none}
+  .rt-strip{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:#fff}
+  .rt-strip-in{display:flex;align-items:center;justify-content:center;gap:var(--space-5);padding:2.25rem 0;flex-wrap:wrap;text-align:center}
+  .rt-strip img{height:46px;width:auto;display:block;flex:none;margin:0 auto}
   .rt-strip .rt-strip-txt{max-width:52ch;color:var(--text-muted);font-size:.98rem;line-height:1.5}
   .rt-strip .rt-strip-txt b{font-family:'Poppins',sans-serif;color:var(--text);font-weight:700}
-  @media(max-width:560px){.rt-strip-in{flex-direction:column;gap:var(--space-4)}.rt-strip img{height:44px}}
+  @media(max-width:560px){.rt-strip-in{flex-direction:column;gap:var(--space-4)}.rt-strip img{height:40px;margin:0 auto}}
   .nav-cta{display:flex;align-items:center;gap:.5rem}
   .nav-cta .btn{padding:.6rem 1.15rem;font-size:.86rem}
 
@@ -184,7 +184,7 @@
 <header class="hero">
   <div class="wrap hero-grid">
     <div>
-      <span class="hero-badge"><span class="dot"><svg viewBox="0 0 34 34" fill="none" aria-hidden="true"><path d="M8 23.5 L14 16 L18.5 20 L26 10.5" stroke="#45B72E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="26" cy="10.5" r="2.6" fill="#45B72E"/></svg></span>A <b>Rate Tracker</b> tool</span>
+      <span class="hero-badge"><img src="assets/rate-tracker-logo-horizontal.png" alt="Rate Tracker"><span class="bdg-sep"></span><span class="bdg-txt">Free tool</span></span>
       <div class="eyebrow">Free for payments reps &amp; agents</div>
       <h1>Know exactly what it takes to <span class="hl">grow your residual.</span></h1>
       <p class="lede">Answer a few quick questions and get a personalized, math-backed plan that turns your income goal into a weekly game plan you can actually run.</p>
@@ -220,8 +220,8 @@
 <!-- ===== BROUGHT TO YOU BY RATE TRACKER ===== -->
 <section class="rt-strip">
   <div class="wrap rt-strip-in">
-    <img src="assets/rate-tracker-logo.jpg" alt="Rate Tracker - Payments, Capital, Profit">
-    <p class="rt-strip-txt">Brought to you by <b>Rate Tracker</b>, a payments company built for the people who sell it. We make this plan free because when reps grow, the whole industry grows.</p>
+    <img src="assets/rate-tracker-logo-horizontal.png" alt="Rate Tracker - Payments, Capital, Profit">
+    <p class="rt-strip-txt">A free tool from <b>Rate Tracker</b>, built by people who work in payments every day. No pitch, no catch. Just the math behind a residual you can actually plan around.</p>
   </div>
 </section>
 
